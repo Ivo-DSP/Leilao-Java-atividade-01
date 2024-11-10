@@ -1,6 +1,7 @@
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -18,6 +19,7 @@ public class cadastroVIEW extends javax.swing.JFrame {
      */
     public cadastroVIEW() {
         initComponents();
+        setLocationRelativeTo(null); // centraliza a tela
     }
 
     /**
@@ -145,7 +147,7 @@ public class cadastroVIEW extends javax.swing.JFrame {
 
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
         ProdutosDTO produto = new ProdutosDTO();
-        boolean statuss; 
+        boolean statuss, retorno = false; 
         int resposta;
         String nome = cadastroNome.getText();
         String valor = cadastroValor.getText();
@@ -155,8 +157,25 @@ public class cadastroVIEW extends javax.swing.JFrame {
         produto.setStatus(status);
         
         ProdutosDAO produtodao = new ProdutosDAO();
-        produtodao.cadastrarProduto(produto);
         
+        try {
+            retorno = produtodao.connectDB();
+            if (retorno) JOptionPane.showMessageDialog(null,"conexão com BD OK");
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(cadastroVIEW.class.getName()).log(Level.SEVERE, null, ex);
+            if (!retorno) JOptionPane.showMessageDialog(null,"conexão com BD falhou!");
+        }
+        
+        if (retorno){
+            int ret = 0;
+            ret = produtodao.salvar(produto);
+            if(ret == 1){
+                JOptionPane.showMessageDialog(null,"dados salvos!");
+                cadastroNome.setText("");
+                cadastroValor.setText("");
+            }
+            else JOptionPane.showMessageDialog(null,"falha na gravação. erro: "+ret);
+        }
         
     }//GEN-LAST:event_btnCadastrarActionPerformed
 
