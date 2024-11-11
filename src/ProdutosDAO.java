@@ -15,6 +15,8 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.sql.SQLException;
 import java.sql.DriverManager;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 public class ProdutosDAO {
@@ -81,6 +83,28 @@ public class ProdutosDAO {
         }
      }  
     
+    public boolean vender(int id) {
+        int status;
+        
+        try {
+            st = conn.prepareStatement("UPDATE produtos SET status='Vendido' WHERE id = ?");
+            st.setInt(1, id);
+            status = st.executeUpdate();
+            //JOptionPane.showMessageDialog(null, "resposta: " + status);
+
+            if(status == 1){ // se encontrou o produto, faça
+             return true;   
+            } else {
+             return false;
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(ProdutosDAO.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Erro ao conectar: " + ex.getMessage());
+        }
+        
+        return false;  
+    }
         
 }
 

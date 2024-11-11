@@ -140,10 +140,21 @@ public class listagemVIEW extends javax.swing.JFrame {
 
     private void btnVenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVenderActionPerformed
         String id = id_produto_venda.getText();
+        boolean retorno = false;
         
-        ProdutosDAO produtosdao = new ProdutosDAO();
+        ProdutosDAO produtosdao = new ProdutosDAO();        
+        try {
+            retorno = produtosdao.connectDB();
+            if (retorno) JOptionPane.showMessageDialog(null,"conexão com BD OK");
+        } catch (ClassNotFoundException ex) {
+            if (!retorno) JOptionPane.showMessageDialog(null,"conexão com BD falhou!");
+        }
         
-        //produtosdao.venderProduto(Integer.parseInt(id));
+        if(retorno) {
+            boolean ret = produtosdao.vender(Integer.parseInt(id));
+            JOptionPane.showMessageDialog(null,"resposta: "+ret);
+        }
+        
         listarProdutos();
     }//GEN-LAST:event_btnVenderActionPerformed
 
