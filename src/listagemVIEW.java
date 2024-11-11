@@ -1,6 +1,8 @@
 
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -206,18 +208,24 @@ public class listagemVIEW extends javax.swing.JFrame {
         try {
             ProdutosDAO produtosdao = new ProdutosDAO();
             
-            DefaultTableModel model = (DefaultTableModel) listaProdutos.getModel();
-            model.setNumRows(0);
+            boolean status2 = produtosdao.connectDB();
+            if(status2){
+                ArrayList<ProdutosDTO> listagem = produtosdao.listarProdutos();
+                
+                DefaultTableModel model = (DefaultTableModel) listaProdutos.getModel();
+                model.setNumRows(0);
+                listaProdutos.setRowSorter(new TableRowSorter(model));
             
-            ArrayList<ProdutosDTO> listagem = produtosdao.listarProdutos();
-            
-            for(int i = 0; i < listagem.size(); i++){
-                model.addRow(new Object[]{
-                    listagem.get(i).getId(),
-                    listagem.get(i).getNome(),
-                    listagem.get(i).getValor(),
-                    listagem.get(i).getStatus()
-                });
+                for(int i = 0; i < listagem.size(); i++){
+                    model.addRow(new Object[]{
+                        listagem.get(i).getId(),
+                        listagem.get(i).getNome(),
+                        listagem.get(i).getValor(),
+                        listagem.get(i).getStatus()
+                    });
+                }
+            } else{
+             JOptionPane.showMessageDialog(null,"Erro de conexão");   
             }
         } catch (Exception e) {
         }

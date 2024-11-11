@@ -43,9 +43,29 @@ public class ProdutosDAO {
       }
     
     
-    public ArrayList<ProdutosDTO> listarProdutos(){
+    public ArrayList<ProdutosDTO> listarProdutos(){  // pega todos as posiçoes disponíveis na lista
+        String sql = "SELECT * FROM produtos";
         
-        return listagem;
+        try { 
+            PreparedStatement stmt = this.conn.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery();
+            
+            ArrayList<ProdutosDTO> listaProdutos = new ArrayList<>();
+            while (rs.next()) { //.next retorna verdadeiro caso exista uma próxima posição dentro do array
+                ProdutosDTO produto = new ProdutosDTO();
+                produto.setId(rs.getInt("id"));
+                produto.setNome(rs.getString("nome"));
+                produto.setValor(rs.getInt("valor"));
+                produto.setStatus(rs.getString("status"));
+                listaProdutos.add(produto);
+            }
+            return listaProdutos;
+                    
+         } catch (Exception e) { 
+            System.out.println("lista vazia"); 
+            return null; 
+         }
+        
     }
     
     public int salvar(ProdutosDTO produt){ 
