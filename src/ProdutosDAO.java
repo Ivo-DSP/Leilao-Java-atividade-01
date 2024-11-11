@@ -13,8 +13,6 @@ import java.sql.Connection;
 import javax.swing.JOptionPane;
 import java.sql.ResultSet;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.sql.SQLException;
 import java.sql.DriverManager;
 
@@ -33,8 +31,7 @@ public class ProdutosDAO {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/uc11","root","123456"); 
-          //conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/uc11?user=root&password=123456");
-          //conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/cenaflix","root", "123456");
+      
             return true;   
         } catch (SQLException erro){
             JOptionPane.showMessageDialog(null, "Erro de conexão ao BD" + erro.getMessage());
